@@ -53,22 +53,22 @@ public class SeleccionarPropietario extends JDialog implements ActionListener {
 		btnConsulta.setBounds(251, 247, 296, 52);
 		getContentPane().add(btnConsulta);
 		
-		cargarCombo();
-	}
-
-	private void cargarCombo() {
 		propietarios = datos.listarPropietarios();
 		for (Propietario p : propietarios.values()) {
-			cmbxSelPropietario.addItem(p.getIdentificador() + " " + p.getNombre());
+			cmbxSelPropietario.addItem(p.getIdentificador());
 		}
 		cmbxSelPropietario.setSelectedIndex(-1);
 	}
 
+	
+
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnConsulta)) {
-			Propietario propietario = datos.buscarPropietario(propietarios.get(cmbxSelPropietario.getSelectedIndex()).getIdentificador());
+			//Error
+			Propietario propietario = datos.buscarPropietario("");
 			VPropietario consulta = new VPropietario(this, propietario, true, datos);
 			consulta.setVisible(true);
+			
 		}
 	}
 

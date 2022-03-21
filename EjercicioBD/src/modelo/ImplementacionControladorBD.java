@@ -19,12 +19,14 @@ public class ImplementacionControladorBD implements ControladorDatos{
 	
 	//Conexion
 	private String url = "jdbc:mysql://localhost:3306/bdcoches?serverTimezone=Europe/Madrid&useSSL=false";
-	private String usuario = "root";
+	//private String usuario = "root";
+	private String usuario = "adminTemp";
 	private String contraseña = "abcd*1234";
 	
 	//SQL
 	final String INSERTpropietario = "INSERT INTO propietario(ID_PROPIETARIO, NOMBRE, FECHA_NAC) VALUES(?,?,?)";
 	final String CONSULTARpropietarios = "SELECT * FROM propietario";
+	final String MOSTRARpropietario = "SELECT * FROM propietario WHERE ID_PROPIETARIO = ?";
 	
 	public void openConnection() {
 		try {
@@ -70,8 +72,40 @@ public class ImplementacionControladorBD implements ControladorDatos{
 
 	@Override
 	public Propietario buscarPropietario(String codigo) {
-		// TODO Auto-generated method stub
-		return null;
+		//Error
+		Propietario propietario = null;
+		ResultSet rs = null;
+		
+		openConnection();
+		try {
+			stmt = conex.prepareStatement(MOSTRARpropietario);
+			rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				propietario = new Propietario();
+				propietario.setIdentificador(codigo);
+				propietario.setNombre(rs.getString(2));
+				propietario.setFechaNacimiento(rs.getDate(3).toLocalDate());
+				System.out.println(propietario.getNombre());
+				System.out.println(propietario.getFechaNacimiento());
+				System.out.println(propietario.getIdentificador());
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				closeConnection();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return propietario;
 	}
 
 	@Override
@@ -107,14 +141,15 @@ public class ImplementacionControladorBD implements ControladorDatos{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
+			
+			try {
+				if (rs != null) {
 					rs.close();
-					closeConnection();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
+				closeConnection();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		

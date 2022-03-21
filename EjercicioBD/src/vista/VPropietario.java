@@ -27,6 +27,7 @@ public class VPropietario extends JDialog implements ActionListener {
 	private JButton btnModificacion;
 	private JButton btnAlta;
 	private ControladorDatos datos;
+	private Propietario propietario;
 
 	/**
 	 * Create the dialog.
@@ -81,10 +82,12 @@ public class VPropietario extends JDialog implements ActionListener {
 		btnModificacion = new JButton("Modificacion");
 		btnModificacion.setBounds(480, 177, 165, 41);
 		getContentPane().add(btnModificacion);
+		btnModificacion.setEnabled(false);
 
 		btnBaja = new JButton("Baja");
 		btnBaja.setBounds(480, 257, 165, 41);
 		getContentPane().add(btnBaja);
+		btnBaja.setEnabled(false);
 
 		btnAlta.addActionListener(this);
 		btnModificacion.addActionListener(this);
@@ -96,6 +99,7 @@ public class VPropietario extends JDialog implements ActionListener {
 		super(seleccionarPropietario);
 		this.setModal(b);
 		this.datos = datos;
+		this.propietario = propietario;
 		setBounds(100, 100, 752, 568);
 		getContentPane().setLayout(null);
 		{
@@ -133,6 +137,7 @@ public class VPropietario extends JDialog implements ActionListener {
 		btnAlta = new JButton("Alta");
 		btnAlta.setBounds(480, 93, 165, 41);
 		getContentPane().add(btnAlta);
+		btnAlta.setEnabled(false);
 
 		btnModificacion = new JButton("Modificacion");
 		btnModificacion.setBounds(480, 177, 165, 41);
@@ -147,11 +152,12 @@ public class VPropietario extends JDialog implements ActionListener {
 		btnBaja.addActionListener(this);
 
 		mostrarDatos();
-
 	}
 
 	private void mostrarDatos() {
-		
+		txtId.setText(propietario.getIdentificador());
+		txtNombre.setText(propietario.getNombre());
+		txtFechaNacimiento.setText(String.valueOf(propietario.getFechaNacimiento()));
 	}
 
 	@Override
