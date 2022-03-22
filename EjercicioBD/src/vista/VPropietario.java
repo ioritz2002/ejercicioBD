@@ -113,6 +113,7 @@ public class VPropietario extends JDialog implements ActionListener {
 		txtId.setBounds(164, 103, 222, 26);
 		getContentPane().add(txtId);
 		txtId.setColumns(10);
+		txtId.setEditable(false);
 
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -170,6 +171,16 @@ public class VPropietario extends JDialog implements ActionListener {
 			prop.setFechaNacimiento(LocalDate.parse(txtFechaNacimiento.getText()));
 
 			datos.altaPropietario(prop);
+			limpiar();
+		}
+		
+		if (e.getSource().equals(btnBaja)) {
+			Propietario prop = new Propietario();
+			prop.setIdentificador(txtId.getText());
+			prop.setNombre(txtNombre.getText());
+			prop.setFechaNacimiento(LocalDate.parse(txtFechaNacimiento.getText()));
+			
+			datos.eliminarPropietario(prop);
 			limpiar();
 		}
 

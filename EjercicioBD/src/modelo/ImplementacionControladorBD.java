@@ -19,14 +19,16 @@ public class ImplementacionControladorBD implements ControladorDatos{
 	
 	//Conexion
 	private String url = "jdbc:mysql://localhost:3306/bdcoches?serverTimezone=Europe/Madrid&useSSL=false";
-	//private String usuario = "root";
-	private String usuario = "adminTemp";
+	private String usuario = "root";
+	//private String usuario = "adminTemp";
 	private String contraseña = "abcd*1234";
 	
 	//SQL
 	final String INSERTpropietario = "INSERT INTO propietario(ID_PROPIETARIO, NOMBRE, FECHA_NAC) VALUES(?,?,?)";
 	final String CONSULTARpropietarios = "SELECT * FROM propietario";
 	final String MOSTRARpropietario = "SELECT * FROM propietario WHERE ID_PROPIETARIO = ?";
+	final String DELETEpropietario = "DELETE FROM propietario WHERE ID_PROPIETARIO = ?";
+	final String UPDATEpropietario = "UPDATE propietario SET NOMBRE = ?, FECHA_NAC = ? WHERE ID_PROPIETARIO = ?";
 	
 	public void openConnection() {
 		try {
@@ -116,8 +118,24 @@ public class ImplementacionControladorBD implements ControladorDatos{
 
 	@Override
 	public void eliminarPropietario(Propietario prop) {
-		// TODO Auto-generated method stub
-		
+		openConnection();
+		try {
+			stmt = conex.prepareStatement(DELETEpropietario);
+			
+			stmt.setString(1, prop.getIdentificador());
+			
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
 	}
 
 	@Override
