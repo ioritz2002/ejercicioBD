@@ -1,17 +1,12 @@
 package vista;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
+import javax.swing.JOptionPane;
 import clases.Propietario;
 import modelo.ControladorDatos;
 import javax.swing.JButton;
@@ -53,10 +48,12 @@ public class SeleccionarPropietario extends JDialog implements ActionListener {
 		btnConsulta.setBounds(251, 247, 296, 52);
 		getContentPane().add(btnConsulta);
 		
-		cargarCombo();
+		cargarPropietario(datos);
 	}
 
-	private void cargarCombo() {
+	
+
+	private void cargarPropietario(ControladorDatos datos) {
 		propietarios = datos.listarPropietarios();
 		for (Propietario p : propietarios.values()) {
 			cmbxSelPropietario.addItem(p.getIdentificador() + " " + p.getNombre());
@@ -64,11 +61,25 @@ public class SeleccionarPropietario extends JDialog implements ActionListener {
 		cmbxSelPropietario.setSelectedIndex(-1);
 	}
 
+	private void listarPropietario(ControladorDatos datos) {
+		if (cmbxSelPropietario.getSelectedIndex() == -1) {
+			JOptionPane.showMessageDialog(null, "Error, debe seleccionar un propietario", "Cuidado", JOptionPane.ERROR_MESSAGE);
+		} else {
+			String cadena = (String) cmbxSelPropietario.getSelectedItem();
+			int pos = cadena.indexOf(" ");
+			String id = cadena.substring(0, pos);
+			
+			VPropietario consulta = new VPropietario(this, propietarios.get(id), true, datos);
+			consulta.setVisible(true);
+		}
+		
+	}
+
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnConsulta)) {
-			Propietario propietario = datos.buscarPropietario(propietarios.get(cmbxSelPropietario.getSelectedIndex()).getIdentificador());
-			VPropietario consulta = new VPropietario(this, propietario, true, datos);
-			consulta.setVisible(true);
+			//Error
+			listarPropietario(datos);
+			
 		}
 	}
 

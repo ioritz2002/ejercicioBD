@@ -27,6 +27,7 @@ public class VPropietario extends JDialog implements ActionListener {
 	private JButton btnModificacion;
 	private JButton btnAlta;
 	private ControladorDatos datos;
+	private Propietario propietario;
 
 	/**
 	 * Create the dialog.
@@ -81,10 +82,12 @@ public class VPropietario extends JDialog implements ActionListener {
 		btnModificacion = new JButton("Modificacion");
 		btnModificacion.setBounds(480, 177, 165, 41);
 		getContentPane().add(btnModificacion);
+		btnModificacion.setEnabled(false);
 
 		btnBaja = new JButton("Baja");
 		btnBaja.setBounds(480, 257, 165, 41);
 		getContentPane().add(btnBaja);
+		btnBaja.setEnabled(false);
 
 		btnAlta.addActionListener(this);
 		btnModificacion.addActionListener(this);
@@ -96,6 +99,7 @@ public class VPropietario extends JDialog implements ActionListener {
 		super(seleccionarPropietario);
 		this.setModal(b);
 		this.datos = datos;
+		this.propietario = propietario;
 		setBounds(100, 100, 752, 568);
 		getContentPane().setLayout(null);
 		{
@@ -109,6 +113,7 @@ public class VPropietario extends JDialog implements ActionListener {
 		txtId.setBounds(164, 103, 222, 26);
 		getContentPane().add(txtId);
 		txtId.setColumns(10);
+		txtId.setEditable(false);
 
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -133,6 +138,7 @@ public class VPropietario extends JDialog implements ActionListener {
 		btnAlta = new JButton("Alta");
 		btnAlta.setBounds(480, 93, 165, 41);
 		getContentPane().add(btnAlta);
+		btnAlta.setEnabled(false);
 
 		btnModificacion = new JButton("Modificacion");
 		btnModificacion.setBounds(480, 177, 165, 41);
@@ -147,11 +153,12 @@ public class VPropietario extends JDialog implements ActionListener {
 		btnBaja.addActionListener(this);
 
 		mostrarDatos();
-
 	}
 
 	private void mostrarDatos() {
-		
+		txtId.setText(propietario.getIdentificador());
+		txtNombre.setText(propietario.getNombre());
+		txtFechaNacimiento.setText(String.valueOf(propietario.getFechaNacimiento()));
 	}
 
 	@Override
@@ -165,6 +172,26 @@ public class VPropietario extends JDialog implements ActionListener {
 
 			datos.altaPropietario(prop);
 			limpiar();
+		}
+		
+		if (e.getSource().equals(btnBaja)) {
+			Propietario prop = new Propietario();
+			prop.setIdentificador(txtId.getText());
+			prop.setNombre(txtNombre.getText());
+			prop.setFechaNacimiento(LocalDate.parse(txtFechaNacimiento.getText()));
+			
+			datos.eliminarPropietario(prop);
+			this.dispose();
+		}
+		
+		if (e.getSource().equals(btnModificacion)) {
+			Propietario prop = new Propietario();
+			prop.setIdentificador(txtId.getText());
+			prop.setNombre(txtNombre.getText());
+			prop.setFechaNacimiento(LocalDate.parse(txtFechaNacimiento.getText()));
+			
+			datos.modificarPropietario(prop);
+			this.dispose();
 		}
 
 	}
