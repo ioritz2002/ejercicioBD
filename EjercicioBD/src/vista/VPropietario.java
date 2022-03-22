@@ -181,7 +181,17 @@ public class VPropietario extends JDialog implements ActionListener {
 			prop.setFechaNacimiento(LocalDate.parse(txtFechaNacimiento.getText()));
 			
 			datos.eliminarPropietario(prop);
-			limpiar();
+			this.dispose();
+		}
+		
+		if (e.getSource().equals(btnModificacion)) {
+			Propietario prop = new Propietario();
+			prop.setIdentificador(txtId.getText());
+			prop.setNombre(txtNombre.getText());
+			prop.setFechaNacimiento(LocalDate.parse(txtFechaNacimiento.getText()));
+			
+			datos.modificarPropietario(prop);
+			this.dispose();
 		}
 
 	}

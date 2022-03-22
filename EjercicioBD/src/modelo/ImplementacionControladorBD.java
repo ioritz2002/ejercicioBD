@@ -112,8 +112,26 @@ public class ImplementacionControladorBD implements ControladorDatos{
 
 	@Override
 	public void modificarPropietario(Propietario prop) {
-		// TODO Auto-generated method stub
-		
+		openConnection();
+		try {
+			stmt = conex.prepareStatement(UPDATEpropietario);
+			
+			stmt.setString(1, prop.getNombre());
+			stmt.setDate(2, Date.valueOf(prop.getFechaNacimiento()));
+			stmt.setString(3, prop.getIdentificador());
+			
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
 	}
 
 	@Override
