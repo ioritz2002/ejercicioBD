@@ -66,7 +66,7 @@ public class VPrincipal extends JFrame implements ActionListener{
 		}
 		if (e.getSource().equals(btnAltapropietario)) {
 			VPropietario alta = new VPropietario(this, true, datos);
-			alta .setVisible(true);
+			alta.setVisible(true);
 		}
 		if (e.getSource().equals(btnConsultacoche)) {
 			
