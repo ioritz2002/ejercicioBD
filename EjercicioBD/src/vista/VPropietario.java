@@ -12,6 +12,8 @@ import clases.Propietario;
 import modelo.ControladorDatos;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -179,9 +181,10 @@ public class VPropietario extends JDialog implements ActionListener {
 			prop.setIdentificador(txtId.getText());
 			prop.setNombre(txtNombre.getText());
 			prop.setFechaNacimiento(LocalDate.parse(txtFechaNacimiento.getText()));
-			
-			datos.eliminarPropietario(prop);
-			this.dispose();
+			if(JOptionPane.showConfirmDialog(null, "Esta seguro que quiere borrar el propietario", "Selecciona una opcion", JOptionPane.YES_NO_OPTION) == 0) {
+				datos.eliminarPropietario(prop);
+				this.dispose();
+			}
 		}
 		
 		if (e.getSource().equals(btnModificacion)) {
