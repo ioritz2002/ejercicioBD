@@ -196,7 +196,7 @@ public class ImplementacionControladorBD implements ControladorDatos{
 
 	@Override
 	public void altaCoche(Coche coch) {
-		/*
+		
 		openConnection();
 		try {
 			
@@ -207,8 +207,7 @@ public class ImplementacionControladorBD implements ControladorDatos{
 			stmt.setString(3, coch.getModelo());
 			stmt.setInt(4, coch.getEdad());
 			stmt.setDouble(5, coch.getPrecio());
-			stmt.setString(6, );
-			
+			stmt.setString(6, coch.getIdPropietario());
 			
 			stmt.executeUpdate();
 			
@@ -222,7 +221,7 @@ public class ImplementacionControladorBD implements ControladorDatos{
 				// TODO: handle exception
 				e2.printStackTrace();
 			}
-		}*/
+		}
 		
 	}
 

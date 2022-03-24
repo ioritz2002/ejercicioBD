@@ -6,6 +6,14 @@ public class Coche {
 	private String modelo;
 	private int edad;
 	private double precio;
+	private String idPropietario;
+	
+	public String getIdPropietario() {
+		return idPropietario;
+	}
+	public void setIdPropietario(String idPropietario) {
+		this.idPropietario = idPropietario;
+	}
 	public String getMatricula() {
 		return matricula;
 	}

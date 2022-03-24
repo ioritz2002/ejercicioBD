@@ -67,14 +67,17 @@ public class VCoche extends JDialog implements ActionListener{
 		btnAlta = new JButton("Alta");
 		btnAlta.setBounds(480, 93, 165, 41);
 		getContentPane().add(btnAlta);
+		btnAlta.addActionListener(this);
 		
 		btnModificacion = new JButton("Modificacion");
 		btnModificacion.setBounds(480, 177, 165, 41);
 		getContentPane().add(btnModificacion);
+		btnModificacion.addActionListener(this);
 		
 		btnBaja = new JButton("Baja");
 		btnBaja.setBounds(480, 278, 165, 41);
 		getContentPane().add(btnBaja);
+		btnBaja.addActionListener(this);
 		
 		btnModificacion.setEnabled(false);
 		btnBaja.setEnabled(false);
@@ -152,15 +155,18 @@ public class VCoche extends JDialog implements ActionListener{
 		btnAlta = new JButton("Alta");
 		btnAlta.setBounds(480, 93, 165, 41);
 		getContentPane().add(btnAlta);
+		btnAlta.addActionListener(this);
 		btnAlta.setEnabled(false);
 		
 		btnModificacion = new JButton("Modificacion");
 		btnModificacion.setBounds(480, 177, 165, 41);
 		getContentPane().add(btnModificacion);
+		btnModificacion.addActionListener(this);
 		
 		btnBaja = new JButton("Baja");
 		btnBaja.setBounds(480, 278, 165, 41);
 		getContentPane().add(btnBaja);
+		btnBaja.addActionListener(this);
 		
 		lblEdad = new JLabel("Edad");
 		lblEdad.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -227,14 +233,19 @@ public class VCoche extends JDialog implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnAlta)) {
+			String propietario = (String) cmbxPropietario.getSelectedItem();
+			String id = propietario.substring(0, propietario.indexOf(" "));
 			Coche coche = new Coche();
 			coche.setMatricula(txtMatricula.getText());
 			coche.setMarca(txtMarca.getText());
 			coche.setModelo(txtModelo.getText());
 			coche.setEdad(Integer.parseInt(txtEdad.getText()));
 			coche.setPrecio(Double.parseDouble(txtPrecio.getText()));
+			coche.setIdPropietario(propietarios.get(id).getIdentificador());
 			
 			datos.altaCoche(coche);
 		}
 	}
+
+	
 }
