@@ -71,13 +71,13 @@ public class SeleccionarPropietario extends JDialog implements ActionListener {
 			
 			VPropietario consulta = new VPropietario(this, propietarios.get(id), true, datos);
 			consulta.setVisible(true);
+			this.dispose();
 		}
 		
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnConsulta)) {
-			//Error
 			listarPropietario(datos);
 			
 		}

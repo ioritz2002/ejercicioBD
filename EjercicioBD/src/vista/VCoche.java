@@ -5,6 +5,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JButton;
@@ -38,6 +40,7 @@ public class VCoche extends JDialog implements ActionListener{
 	private JTextField txtPrecio;
 	private ControladorDatos datos;
 	private Map<String, Propietario> propietarios;
+	private Coche coche;
 
 
 	/**
@@ -138,6 +141,7 @@ public class VCoche extends JDialog implements ActionListener{
 		super(seleccionarCoche);
 		this.setModal(modal);
 		this.datos = datos;
+		this.coche = coche;
 		setBounds(100, 100, 752, 568);
 		getContentPane().setLayout(null);
 		{
@@ -218,8 +222,26 @@ public class VCoche extends JDialog implements ActionListener{
 		getContentPane().add(txtPrecio);
 		
 		cargarComboPropietarios(datos);
+		mostrarDatos();
 	}
 	
+	private void mostrarDatos() {
+		List<Object> items = new ArrayList<>();
+		String propietario;
+		txtMatricula.setText(coche.getMatricula());
+		txtMarca.setText(coche.getMarca());
+		txtModelo.setText(coche.getModelo());
+		txtEdad.setText(String.valueOf(coche.getEdad()));
+		txtPrecio.setText(String.valueOf(coche.getPrecio()));
+		
+		for (int i = 0; i < propietarios.size(); i++) {
+			items.add(cmbxPropietario.getItemAt(i));
+			if (items.get(i).toString().contains(coche.getIdPropietario())) {
+				cmbxPropietario.setSelectedIndex(i);
+			}
+		}
+	}
+
 	private void cargarComboPropietarios(ControladorDatos datos) {
 		propietarios = datos.listarPropietarios();
 		
@@ -244,7 +266,20 @@ public class VCoche extends JDialog implements ActionListener{
 			coche.setIdPropietario(propietarios.get(id).getIdentificador());
 			
 			datos.altaCoche(coche);
+			limpiar();
 		}
+		
+	}
+	
+	
+	
+	private void limpiar() {
+		txtMatricula.setText("");
+		txtMarca.setText("");
+		txtModelo.setText("");
+		txtEdad.setText("");
+		txtPrecio.setText("");
+		cmbxPropietario.setSelectedIndex(-1);
 	}
 
 	
