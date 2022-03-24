@@ -5,7 +5,7 @@ public class Coche {
 	private String marca;
 	private String modelo;
 	private int edad;
-	private float precio;
+	private double precio;
 	public String getMatricula() {
 		return matricula;
 	}
@@ -30,10 +30,10 @@ public class Coche {
 	public void setEdad(int edad) {
 		this.edad = edad;
 	}
-	public float getPrecio() {
+	public double getPrecio() {
 		return precio;
 	}
-	public void setPrecio(float precio) {
+	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
 	

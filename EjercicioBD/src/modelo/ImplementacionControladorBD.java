@@ -29,6 +29,7 @@ public class ImplementacionControladorBD implements ControladorDatos{
 	final String MOSTRARpropietario = "SELECT * FROM propietario WHERE ID_PROPIETARIO = ?";
 	final String DELETEpropietario = "DELETE FROM propietario WHERE ID_PROPIETARIO = ?";
 	final String UPDATEpropietario = "UPDATE propietario SET NOMBRE = ?, FECHA_NAC = ? WHERE ID_PROPIETARIO = ?";
+	final String INSERTcoche = "INSERT INTO coches(MATRICULA, MARCA, MODELO, EDAD, PRECIO, ID_PROPIETARIO) VALUES(?,?,?,?,?,?)";
 	
 	public void openConnection() {
 		try {
@@ -195,7 +196,33 @@ public class ImplementacionControladorBD implements ControladorDatos{
 
 	@Override
 	public void altaCoche(Coche coch) {
-		// TODO Auto-generated method stub
+		/*
+		openConnection();
+		try {
+			
+			stmt = conex.prepareStatement(INSERTcoche);
+			
+			stmt.setString(1, coch.getMatricula());
+			stmt.setString(2, coch.getMarca());
+			stmt.setString(3, coch.getModelo());
+			stmt.setInt(4, coch.getEdad());
+			stmt.setDouble(5, coch.getPrecio());
+			stmt.setString(6, );
+			
+			
+			stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}*/
 		
 	}
 
