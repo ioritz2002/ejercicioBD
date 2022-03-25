@@ -24,11 +24,15 @@ public class ImplementacionControladorBD implements ControladorDatos{
 	private String contraseña = "abcd*1234";
 	
 	//SQL
-	final String INSERTpropietario = "INSERT INTO propietario(ID_PROPIETARIO, NOMBRE, FECHA_NAC) VALUES(?,?,?)";
-	final String CONSULTARpropietarios = "SELECT * FROM propietario";
-	final String MOSTRARpropietario = "SELECT * FROM propietario WHERE ID_PROPIETARIO = ?";
-	final String DELETEpropietario = "DELETE FROM propietario WHERE ID_PROPIETARIO = ?";
-	final String UPDATEpropietario = "UPDATE propietario SET NOMBRE = ?, FECHA_NAC = ? WHERE ID_PROPIETARIO = ?";
+	private final String INSERTpropietario = "INSERT INTO propietario(ID_PROPIETARIO, NOMBRE, FECHA_NAC) VALUES(?,?,?)";
+	private final String CONSULTARpropietarios = "SELECT * FROM propietario";
+	private final String MOSTRARpropietario = "SELECT * FROM propietario WHERE ID_PROPIETARIO = ?";
+	private final String DELETEpropietario = "DELETE FROM propietario WHERE ID_PROPIETARIO = ?";
+	private final String UPDATEpropietario = "UPDATE propietario SET NOMBRE = ?, FECHA_NAC = ? WHERE ID_PROPIETARIO = ?";
+	private final String INSERTcoche = "INSERT INTO coches(MATRICULA, MARCA, MODELO, EDAD, PRECIO, ID_PROPIETARIO) VALUES(?,?,?,?,?,?)";
+	private final String SELECTcoches = "SELECT * FROM coches";
+	private final String DELETEcoches = "DELETE FROM  coches WHERE MATRICULA = ?";
+	private final String UPDATEcoches = "UPDATE coches SET MARCA=?, MODELO=?, EDAD=?, PRECIO=?, ID_PROPIETARIO=? WHERE MATRICULA = ?";
 	
 	public void openConnection() {
 		try {
@@ -88,9 +92,7 @@ public class ImplementacionControladorBD implements ControladorDatos{
 				propietario.setIdentificador(codigo);
 				propietario.setNombre(rs.getString(2));
 				propietario.setFechaNacimiento(rs.getDate(3).toLocalDate());
-				System.out.println(propietario.getNombre());
-				System.out.println(propietario.getFechaNacimiento());
-				System.out.println(propietario.getIdentificador());
+				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -139,9 +141,7 @@ public class ImplementacionControladorBD implements ControladorDatos{
 		openConnection();
 		try {
 			stmt = conex.prepareStatement(DELETEpropietario);
-			
 			stmt.setString(1, prop.getIdentificador());
-			
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -195,7 +195,32 @@ public class ImplementacionControladorBD implements ControladorDatos{
 
 	@Override
 	public void altaCoche(Coche coch) {
-		// TODO Auto-generated method stub
+		
+		openConnection();
+		try {
+			
+			stmt = conex.prepareStatement(INSERTcoche);
+			
+			stmt.setString(1, coch.getMatricula());
+			stmt.setString(2, coch.getMarca());
+			stmt.setString(3, coch.getModelo());
+			stmt.setInt(4, coch.getEdad());
+			stmt.setDouble(5, coch.getPrecio());
+			stmt.setString(6, coch.getIdPropietario());
+			
+			stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
 		
 	}
 
@@ -207,20 +232,89 @@ public class ImplementacionControladorBD implements ControladorDatos{
 
 	@Override
 	public void modificarCoche(Coche coch) {
-		// TODO Auto-generated method stub
-		
+		openConnection();
+		try {
+			
+			stmt = conex.prepareStatement(UPDATEcoches);
+			
+			stmt.setString(6, coch.getMatricula());
+			stmt.setString(1, coch.getMarca());
+			stmt.setString(2, coch.getModelo());
+			stmt.setInt(3, coch.getEdad());
+			stmt.setDouble(4, coch.getPrecio());
+			stmt.setString(5, coch.getIdPropietario());
+			
+			stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
 	}
 
 	@Override
 	public void eliminarCoche(Coche coch) {
-		// TODO Auto-generated method stub
-		
+		openConnection();
+		try {
+			stmt = conex.prepareStatement(DELETEcoches);
+			stmt.setString(1, coch.getMatricula());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
 	}
 
 	@Override
 	public Map<String, Coche> listarCoches() {
-		// TODO Auto-generated method stub
-		return null;
+		ResultSet rs = null;
+		Coche coche = null;
+		Map<String, Coche> coches = new HashMap<String, Coche>();
+		openConnection();
+		try {
+			stmt = conex.prepareStatement(SELECTcoches);
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				coche = new Coche();
+				coche.setMatricula(rs.getString(1));
+				coche.setMarca(rs.getString(2));
+				coche.setModelo(rs.getString(3));
+				coche.setEdad(rs.getInt(4));
+				coche.setPrecio(rs.getDouble(5));
+				coche.setIdPropietario(rs.getString(6));
+				coches.put(coche.getMatricula(), coche);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				closeConnection();
+			} catch (SQLException e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
+		
+		return coches;
 	}
 
 	@Override

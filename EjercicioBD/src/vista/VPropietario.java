@@ -192,9 +192,12 @@ public class VPropietario extends JDialog implements ActionListener {
 			prop.setIdentificador(txtId.getText());
 			prop.setNombre(txtNombre.getText());
 			prop.setFechaNacimiento(LocalDate.parse(txtFechaNacimiento.getText()));
+			if(JOptionPane.showConfirmDialog(null, "Esta seguro que quiere modificar el propietario", "Selecciona una opcion", JOptionPane.YES_NO_OPTION) == 0) {
+				datos.modificarPropietario(prop);
+				this.dispose();
+			}
 			
-			datos.modificarPropietario(prop);
-			this.dispose();
+			
 		}
 
 	}
