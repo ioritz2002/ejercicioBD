@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -220,6 +221,7 @@ public class VCoche extends JDialog implements ActionListener{
 		txtPrecio.setColumns(10);
 		txtPrecio.setBounds(164, 314, 222, 26);
 		getContentPane().add(txtPrecio);
+		txtMatricula.setEditable(false);
 		
 		cargarComboPropietarios(datos);
 		mostrarDatos();
@@ -267,6 +269,33 @@ public class VCoche extends JDialog implements ActionListener{
 			
 			datos.altaCoche(coche);
 			limpiar();
+		}
+		
+		if (e.getSource().equals(btnBaja)) {
+			Coche coche = new Coche();
+			coche.setMatricula(txtMatricula.getText());
+			
+			if (JOptionPane.showConfirmDialog(null, "Esta seguro que quiere borrar el vehiculo", "Seleccione una opcion", JOptionPane.YES_NO_OPTION) == 0) {
+				datos.eliminarCoche(coche);
+				this.dispose();
+			}
+		}
+		
+		if (e.getSource().equals(btnModificacion)) {
+			Coche coche = new Coche();
+			String propietario = (String) cmbxPropietario.getSelectedItem();
+			String id = propietario.substring(0, propietario.indexOf(" "));
+			coche.setMatricula(txtMatricula.getText());
+			coche.setMarca(txtMarca.getText());
+			coche.setModelo(txtModelo.getText());
+			coche.setEdad(Integer.parseInt(txtEdad.getText()));
+			coche.setPrecio(Double.parseDouble(txtPrecio.getText()));
+			coche.setIdPropietario(propietarios.get(id).getIdentificador());
+			
+			if (JOptionPane.showConfirmDialog(null, "Esta seguro que quiere modificar el vehiculo", "Seleccione una opcion", JOptionPane.YES_NO_OPTION) == 0) {
+				datos.modificarCoche(coche);
+				this.dispose();
+			}
 		}
 		
 	}

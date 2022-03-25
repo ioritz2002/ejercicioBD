@@ -19,8 +19,8 @@ public class ImplementacionControladorBD implements ControladorDatos{
 	
 	//Conexion
 	private String url = "jdbc:mysql://localhost:3306/bdcoches?serverTimezone=Europe/Madrid&useSSL=false";
-	//private String usuario = "root";
-	private String usuario = "adminTemp";
+	private String usuario = "root";
+	//private String usuario = "adminTemp";
 	private String contraseña = "abcd*1234";
 	
 	//SQL
@@ -31,6 +31,8 @@ public class ImplementacionControladorBD implements ControladorDatos{
 	private final String UPDATEpropietario = "UPDATE propietario SET NOMBRE = ?, FECHA_NAC = ? WHERE ID_PROPIETARIO = ?";
 	private final String INSERTcoche = "INSERT INTO coches(MATRICULA, MARCA, MODELO, EDAD, PRECIO, ID_PROPIETARIO) VALUES(?,?,?,?,?,?)";
 	private final String SELECTcoches = "SELECT * FROM coches";
+	private final String DELETEcoches = "DELETE FROM  coches WHERE MATRICULA = ?";
+	private final String UPDATEcoches = "UPDATE coches SET MARCA=?, MODELO=?, EDAD=?, PRECIO=?, ID_PROPIETARIO=? WHERE MATRICULA = ?";
 	
 	public void openConnection() {
 		try {
@@ -230,14 +232,51 @@ public class ImplementacionControladorBD implements ControladorDatos{
 
 	@Override
 	public void modificarCoche(Coche coch) {
-		// TODO Auto-generated method stub
-		
+		openConnection();
+		try {
+			
+			stmt = conex.prepareStatement(UPDATEcoches);
+			
+			stmt.setString(6, coch.getMatricula());
+			stmt.setString(1, coch.getMarca());
+			stmt.setString(2, coch.getModelo());
+			stmt.setInt(3, coch.getEdad());
+			stmt.setDouble(4, coch.getPrecio());
+			stmt.setString(5, coch.getIdPropietario());
+			
+			stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
 	}
 
 	@Override
 	public void eliminarCoche(Coche coch) {
-		// TODO Auto-generated method stub
-		
+		openConnection();
+		try {
+			stmt = conex.prepareStatement(DELETEcoches);
+			stmt.setString(1, coch.getMatricula());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				closeConnection();
+			} catch (SQLException e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
 	}
 
 	@Override
