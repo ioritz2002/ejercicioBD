@@ -1,5 +1,6 @@
 package modelo;
 
+import java.io.ObjectInputFilter.Config;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -8,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import clases.Coche;
 import clases.Propietario;
@@ -16,12 +18,14 @@ public class ImplementacionControladorBD implements ControladorDatos{
 
 	private Connection conex;
 	private PreparedStatement stmt;
+	//Se crea el objeto config file para poder leer el fichero de configuracion
+	private ResourceBundle configFile;
 	
 	//Conexion
-	private String url = "jdbc:mysql://localhost:3306/bdcoches?serverTimezone=Europe/Madrid&useSSL=false";
-	private String usuario = "root";
+	private String url;
+	private String usuario;
 	//private String usuario = "adminTemp";
-	private String contraseña = "abcd*1234";
+	private String contraseña;
 	
 	//SQL
 	private final String INSERTpropietario = "INSERT INTO propietario(ID_PROPIETARIO, NOMBRE, FECHA_NAC) VALUES(?,?,?)";
@@ -33,6 +37,15 @@ public class ImplementacionControladorBD implements ControladorDatos{
 	private final String SELECTcoches = "SELECT * FROM coches";
 	private final String DELETEcoches = "DELETE FROM  coches WHERE MATRICULA = ?";
 	private final String UPDATEcoches = "UPDATE coches SET MARCA=?, MODELO=?, EDAD=?, PRECIO=?, ID_PROPIETARIO=? WHERE MATRICULA = ?";
+	
+	public ImplementacionControladorBD() {
+		//Se leen los datos del fichero de configuracion
+		this.configFile = ResourceBundle.getBundle("modelo.config");
+		this.url = configFile.getString("Conn");
+		this.usuario = configFile.getString("BDUser");
+		this.contraseña = configFile.getString("BDPass");
+	}
+	
 	
 	public void openConnection() {
 		try {
